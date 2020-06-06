@@ -1,16 +1,35 @@
 package pl.madld.cms.web;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import pl.madld.cms.user.User;
+import org.springframework.web.bind.annotation.GetMapping;
+import pl.madld.cms.admin.Admin;
+import pl.madld.cms.admin.AdminService;
 
+import java.util.List;
+
+@AllArgsConstructor
 @Controller
 public class HomeController {
-    @RequestMapping("/")
+    private final AdminService adminService;
+
+    @GetMapping("/")
     public String home(Model model) {
-        User user = new User(1, "Artur", "Hacia");
-        model.addAttribute("user", user);
         return "home";
+    }
+
+    @GetMapping("/create-admin")
+    public String createAdmin() {
+        List<Admin> admins = adminService.findAll();
+        if (admins.isEmpty()) {
+            Admin admin = new Admin();
+            admin.setUsername("haciaa");
+            admin.setPassword("haciaa123");
+            admin.setFirstname("Artur");
+            admin.setLastname("Hacia");
+            adminService.saveAdmin(admin);
+        }
+        return "redirect:/admin/";
     }
 }

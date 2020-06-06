@@ -8,7 +8,5 @@
 <body>
 <h1><spring:message code="app.title"/></h1>
 Hello :)<br>
-${user}<br>
-${user.firstname} ${user.lastname}
 </body>
 </html>
