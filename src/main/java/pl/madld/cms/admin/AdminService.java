@@ -3,10 +3,12 @@ package pl.madld.cms.admin;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @AllArgsConstructor
+@Transactional
 @Service
 public class AdminService {
     private final AdminRepository adminRepository;
@@ -16,8 +18,8 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
-    public Admin findByUserName(String username) {
-        return adminRepository.findByUsername(username);
+    public Admin findByEmail(String email) {
+        return adminRepository.findByEmail(email);
     }
 
     public void saveAdmin(Admin admin) {

@@ -21,12 +21,12 @@ public class SpringDataAdminDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        Admin admin = adminService.findByUserName(username);
-        if (admin == null) {throw new UsernameNotFoundException(username); }
+    public UserDetails loadUserByUsername(String email) {
+        Admin admin = adminService.findByEmail(email);
+        if (admin == null) {throw new UsernameNotFoundException(email); }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(admin.getRole()));
-        return new CurrentAdmin(admin.getUsername(),admin.getPassword(),
+        return new CurrentAdmin(admin.getEmail(),admin.getPassword(),
                 grantedAuthorities, admin);
     }
 }

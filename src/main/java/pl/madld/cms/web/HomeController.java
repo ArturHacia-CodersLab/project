@@ -24,7 +24,7 @@ public class HomeController {
         List<Admin> admins = adminService.findAll();
         if (admins.isEmpty()) {
             Admin admin = new Admin();
-            admin.setUsername("haciaa");
+            admin.setEmail("haciaa@gmail.com");
             admin.setPassword("haciaa123");
             admin.setFirstname("Artur");
             admin.setLastname("Hacia");
