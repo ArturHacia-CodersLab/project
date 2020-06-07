@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.madld.cms.admin.security.Role;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class AdminService {
     public void saveAdmin(Admin admin) {
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         admin.setEnabled(1);
-        admin.setRole("ROLE_ADMIN");
+        admin.setRole(Role.ROLE_ADMIN.toString());
         adminRepository.save(admin);
     }
 }
