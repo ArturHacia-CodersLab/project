@@ -7,12 +7,13 @@
 <body>
 <div class="container pt-2">
     <jsp:include page="../../includes/admin/menu.jsp"/>
-    <div class="row mt-5">
+    <jsp:include page="../../includes/messages.jsp"/>
+    <div class="row mb-3">
         <div class="col">
             <a href="<c:url value="/admin/admin"/>" class="btn btn-outline-success">Dodaj administratora</a>
         </div>
     </div>
-    <div class="row mt-3">
+    <div class="row">
         <div class="col">
             <table class="table">
                 <thead class="thead-dark">

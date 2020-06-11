@@ -8,20 +8,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.madld.cms.admin.security.CurrentAdmin;
+import pl.madld.cms.util.UtilService;
 import pl.madld.cms.validation.AddFormValidators;
 import pl.madld.cms.validation.EditFormValidators;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.groups.Default;
+import java.util.Set;
 
 @AllArgsConstructor
 @Controller
 @RequestMapping("/admin")
+@SessionAttributes({"sessionMessages"})
 public class AdminController {
-    private AdminService adminService;
+    private final UtilService utilService;
+    private final AdminService adminService;
 
     @ModelAttribute("currentAdmin")
-    public Admin getCurrentAdmin(@AuthenticationPrincipal CurrentAdmin currentAdmin) {
-        return currentAdmin.getAdmin();
+    public CurrentAdmin getCurrentAdmin(@AuthenticationPrincipal CurrentAdmin currentAdmin) {
+        return currentAdmin;
+    }
+    @ModelAttribute("messages")
+    public Set<String> getMessages(HttpSession session, Model model) {
+        return utilService.getMessages(session, model);
     }
 
     @GetMapping("")
@@ -41,11 +50,13 @@ public class AdminController {
         return "admin/admin";
     }
     @PostMapping("/admin")
-    public String saveAdmin(@Validated({Default.class, AddFormValidators.class}) Admin admin, BindingResult result) {
+    public String createAdmin(@Validated({Default.class, AddFormValidators.class}) Admin admin, BindingResult result,
+                            HttpSession session, Model model) {
         if (result.hasErrors()) {
             return "admin/admin";
         }
         adminService.saveAdmin(admin, false);
+        utilService.addMessage(session, model, "message.admin-add");
         return "redirect:/admin/admins";
     }
 
