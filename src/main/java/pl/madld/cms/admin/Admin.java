@@ -9,8 +9,8 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ConfirmPassword(groups = AddFormValidators.class)
-@EditUniqueEmail(groups = EditFormValidators.class)
+@ConfirmPassword(groups = AddValidators.class)
+@EditUniqueEmail(groups = EditValidators.class)
 @Entity
 @Table(name = Admin.TABLE_NAME)
 public class Admin {
@@ -21,10 +21,10 @@ public class Admin {
     private Long id;
     @NotEmpty(message = "{invalid.email.not-empty}")
     @Email(message = "{invalid.email.email}")
-    @AddEmailUnique(groups = AddFormValidators.class)
+    @AddEmailUnique(groups = AddValidators.class)
     @Column(nullable = false, unique = true, length = 60)
     private String email;
-    @AdminPassword(groups = AddFormValidators.class)
+    @AdminPassword(groups = AddValidators.class)
     private String password;
     @Transient
     private String confirmPassword;

@@ -29,7 +29,9 @@
                         <td>${admin.lastname}</td>
                         <td class="text-right">
                             <a href="<c:url value="/admin/admin/${admin.id}"/>" class="badge badge-pill badge-primary"><spring:message code="app.edit"/></a>
-                            <a href="<c:url value="/admin/delete/${admin.id}"/>" class="badge badge-pill badge-danger"><spring:message code="app.delete"/></a>
+                            <c:if test="${admins.size() > 1}">
+                                <a href="<c:url value="/admin/delete/${admin.id}"/>" class="badge badge-pill badge-danger"><spring:message code="app.delete"/></a>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>

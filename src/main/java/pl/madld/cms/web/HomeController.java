@@ -28,7 +28,7 @@ public class HomeController {
             admin.setPassword("haciaa123");
             admin.setFirstname("Artur");
             admin.setLastname("Hacia");
-            adminService.saveAdmin(admin, false);
+            adminService.createAdmin(admin);
         }
         return "redirect:/admin/";
     }

@@ -5,11 +5,11 @@
 <c:if test="${messages != null && messages.size() != 0}">
     <div class="row mb-3">
         <div class="col">
-            <div class=" alert alert-success m-0">
-                <c:forEach var="message" items="${messages}">
-                    <spring:message code="${message}"/><br>
-                </c:forEach>
-            </div>
+            <c:forEach var="message" items="${messages}">
+                <div class=" alert alert-${message.type} m-0">
+                    <spring:message code="${message.text}"/><br>
+                </div>
+            </c:forEach>
         </div>
     </div>
 </c:if>

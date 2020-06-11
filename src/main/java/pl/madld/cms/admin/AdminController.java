@@ -8,9 +8,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.madld.cms.admin.security.CurrentAdmin;
+import pl.madld.cms.util.Message;
+import pl.madld.cms.util.MessageType;
 import pl.madld.cms.util.UtilService;
-import pl.madld.cms.validation.AddFormValidators;
-import pl.madld.cms.validation.EditFormValidators;
+import pl.madld.cms.validation.AddValidators;
+import pl.madld.cms.validation.EditValidators;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.groups.Default;
@@ -19,7 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/admin")
-@SessionAttributes({"sessionMessages"})
+@SessionAttributes({"sessionMessages", "editAdmin"})
 public class AdminController {
     private final UtilService utilService;
     private final AdminService adminService;
@@ -29,7 +31,7 @@ public class AdminController {
         return currentAdmin;
     }
     @ModelAttribute("messages")
-    public Set<String> getMessages(HttpSession session, Model model) {
+    public Set<Message> getMessages(HttpSession session, Model model) {
         return utilService.getMessages(session, model);
     }
 
@@ -50,13 +52,13 @@ public class AdminController {
         return "admin/admin";
     }
     @PostMapping("/admin")
-    public String createAdmin(@Validated({Default.class, AddFormValidators.class}) Admin admin, BindingResult result,
-                            HttpSession session, Model model) {
+    public String createAdmin(@Validated({Default.class, AddValidators.class}) Admin admin, BindingResult result,
+                              HttpSession session, Model model) {
         if (result.hasErrors()) {
             return "admin/admin";
         }
-        adminService.saveAdmin(admin, false);
-        utilService.addMessage(session, model, "message.admin-add");
+        adminService.createAdmin(admin);
+        utilService.addMessage(session, model, new Message("message.admin-add", MessageType.success));
         return "redirect:/admin/admins";
     }
 
@@ -68,22 +70,30 @@ public class AdminController {
         }
         model.addAttribute("mode", "edit");
         model.addAttribute("admin", admin);
+        model.addAttribute("editAdmin", admin);
         return "admin/admin";
     }
     @PostMapping("/admin/{id}")
-    public String saveAdmin(@Validated({Default.class, EditFormValidators.class}) Admin admin, BindingResult result,
-                            Model model) {
+    public String saveAdmin(@Validated({Default.class, EditValidators.class}) Admin admin, BindingResult result,
+                            HttpSession session, Model model) {
         model.addAttribute("mode", "edit");
         if (result.hasErrors()) {
             return "admin/admin";
         }
-        adminService.saveAdmin(admin, true);
+        Admin editAdmin = (Admin) session.getAttribute("editAdmin");
+        if (editAdmin == null || !editAdmin.getId().equals(admin.getId())) {
+            utilService.addMessage(session, model, new Message("message.critical-edit", MessageType.danger));
+            return "redirect:/admin/admins";
+        }
+        adminService.saveAdmin(admin, editAdmin);
+        utilService.addMessage(session, model, new Message("message.admin-save", MessageType.success));
         return "redirect:/admin/admins";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteAdmin(@PathVariable long id) {
+    public String deleteAdmin(@PathVariable long id, HttpSession session, Model model) {
         adminService.deleteAdmin(id);
+        utilService.addMessage(session, model, new Message("message.admin-delete", MessageType.success));
         return "redirect:/admin/admins";
     }
 }
