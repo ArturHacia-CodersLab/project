@@ -39,6 +39,11 @@ public class AdminService {
         adminRepository.save(editAdmin);
     }
 
+    public void changePassword(Admin admin, Admin editAdmin) {
+        editAdmin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        adminRepository.save(editAdmin);
+    }
+
     public void deleteAdmin(long id) {
         Admin admin = findById(id);
         adminRepository.delete(admin);

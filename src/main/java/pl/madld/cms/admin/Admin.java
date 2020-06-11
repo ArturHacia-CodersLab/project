@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@ConfirmPassword(groups = AddValidators.class)
+@ConfirmPassword(groups = {AddValidators.class, ChangePasswordValidators.class})
 @EditUniqueEmail(groups = EditValidators.class)
 @Entity
 @Table(name = Admin.TABLE_NAME)
@@ -24,7 +24,7 @@ public class Admin {
     @AddEmailUnique(groups = AddValidators.class)
     @Column(nullable = false, unique = true, length = 60)
     private String email;
-    @AdminPassword(groups = AddValidators.class)
+    @AdminPassword(groups = {AddValidators.class, ChangePasswordValidators.class})
     private String password;
     @Transient
     private String confirmPassword;

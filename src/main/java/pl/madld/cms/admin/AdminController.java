@@ -12,6 +12,7 @@ import pl.madld.cms.util.Message;
 import pl.madld.cms.util.MessageType;
 import pl.madld.cms.util.UtilService;
 import pl.madld.cms.validation.AddValidators;
+import pl.madld.cms.validation.ChangePasswordValidators;
 import pl.madld.cms.validation.EditValidators;
 
 import javax.servlet.http.HttpSession;
@@ -82,10 +83,38 @@ public class AdminController {
         }
         Admin editAdmin = (Admin) session.getAttribute("editAdmin");
         if (editAdmin == null || !editAdmin.getId().equals(admin.getId())) {
-            utilService.addMessage(session, model, new Message("message.critical-edit", MessageType.danger));
+            utilService.addMessage(session, model, new Message("message.critical-save", MessageType.danger));
             return "redirect:/admin/admins";
         }
         adminService.saveAdmin(admin, editAdmin);
+        utilService.addMessage(session, model, new Message("message.admin-save", MessageType.success));
+        return "redirect:/admin/admins";
+    }
+
+    @GetMapping("/pass/{id}")
+    public String password(@PathVariable long id, Model model) {
+        Admin admin = adminService.findById(id);
+        if (admin == null) {
+            return "redirect:/admin/admins";
+        }
+        model.addAttribute("mode", "pass");
+        model.addAttribute("admin", admin);
+        model.addAttribute("editAdmin", admin);
+        return "admin/admin";
+    }
+    @PostMapping("/pass/{id}")
+    public String changePassword(@Validated({ChangePasswordValidators.class}) Admin admin, BindingResult result,
+                                 HttpSession session, Model model) {
+        model.addAttribute("mode", "pass");
+        if (result.hasErrors()) {
+            return "admin/admin";
+        }
+        Admin editAdmin = (Admin) session.getAttribute("editAdmin");
+        if (editAdmin == null || !editAdmin.getId().equals(admin.getId())) {
+            utilService.addMessage(session, model, new Message("message.critical-save", MessageType.danger));
+            return "redirect:/admin/admins";
+        }
+        adminService.changePassword(admin, editAdmin);
         utilService.addMessage(session, model, new Message("message.admin-save", MessageType.success));
         return "redirect:/admin/admins";
     }

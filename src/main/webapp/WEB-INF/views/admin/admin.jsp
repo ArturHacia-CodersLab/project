@@ -12,14 +12,16 @@
         <div class="col-6">
             <form:form method="post" modelAttribute="admin">
                 <form:hidden path="id"/>
-                <div class="form-group">
-                    <form:label path="email"><spring:message code="admin.email"/>:</form:label>
-                    <form:input path="email" cssClass="form-control" />
-                    <form:errors path="email" element="div" cssClass="alert alert-danger"/>
-                    <c:if test="${mode == 'edit'}">
-                        <form:errors element="div" cssClass="alert alert-danger"/>
-                    </c:if>
-                </div>
+                <c:if test="${mode != 'pass'}">
+                    <div class="form-group">
+                        <form:label path="email"><spring:message code="admin.email"/>:</form:label>
+                        <form:input path="email" cssClass="form-control" />
+                        <form:errors path="email" element="div" cssClass="alert alert-danger"/>
+                        <c:if test="${mode == 'edit'}">
+                            <form:errors element="div" cssClass="alert alert-danger"/>
+                        </c:if>
+                    </div>
+                </c:if>
                 <c:if test="${mode != 'edit'}">
                     <div class="form-group">
                         <form:label path="password"><spring:message code="admin.password"/>:</form:label>
@@ -32,16 +34,18 @@
                         <form:errors element="div" cssClass="alert alert-danger"/>
                     </div>
                 </c:if>
-                <div class="form-group">
-                    <form:label path="firstname"><spring:message code="admin.firstname"/>:</form:label>
-                    <form:input path="firstname" cssClass="form-control"/>
-                    <form:errors path="firstname" element="div" class="alert alert-danger"/>
-                </div>
-                <div class="form-group">
-                    <form:label path="lastname"><spring:message code="admin.lastname"/>:</form:label>
-                    <form:input path="lastname" cssClass="form-control"/>
-                    <form:errors path="lastname" element="div" cssClass="alert alert-danger"/>
-                </div>
+                <c:if test="${mode != 'pass'}">
+                    <div class="form-group">
+                        <form:label path="firstname"><spring:message code="admin.firstname"/>:</form:label>
+                        <form:input path="firstname" cssClass="form-control"/>
+                        <form:errors path="firstname" element="div" class="alert alert-danger"/>
+                    </div>
+                    <div class="form-group">
+                        <form:label path="lastname"><spring:message code="admin.lastname"/>:</form:label>
+                        <form:input path="lastname" cssClass="form-control"/>
+                        <form:errors path="lastname" element="div" cssClass="alert alert-danger"/>
+                    </div>
+                </c:if>
                 <a href="<c:url value="/admin/admins"/>"
                    class="btn btn-outline-danger float-left"><spring:message code="app.cancel"/></a>
                 <input type="submit" value="<spring:message code="app.save"/>"
