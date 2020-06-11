@@ -1,14 +1,16 @@
 package pl.madld.cms.admin;
 
 import lombok.*;
+import pl.madld.cms.validation.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
+@ConfirmPassword(groups = AddFormValidators.class)
+@EditUniqueEmail(groups = EditFormValidators.class)
 @Entity
 @Table(name = Admin.TABLE_NAME)
 public class Admin {
@@ -17,11 +19,21 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "{invalid.email.not-empty}")
+    @Email(message = "{invalid.email.email}")
+    @AddEmailUnique(groups = AddFormValidators.class)
     @Column(nullable = false, unique = true, length = 60)
     private String email;
+    @AdminPassword(groups = AddFormValidators.class)
     private String password;
-    private int enabled;
+    @Transient
+    private String confirmPassword;
+    @NotNull
+    @Size(min = 5, max = 20, message = "{invalid.firstname.size}")
     private String firstname;
+    @NotNull
+    @Size(min = 5, max = 30, message = "{invalid.lastname.size}")
     private String lastname;
+    private int enabled;
     private String role;
 }

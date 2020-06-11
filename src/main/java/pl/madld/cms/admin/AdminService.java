@@ -19,14 +19,27 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
+    public Admin findById(long id) {
+        return adminRepository.getOne(id);
+    }
     public Admin findByEmail(String email) {
         return adminRepository.findByEmail(email);
     }
 
-    public void saveAdmin(Admin admin) {
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+    public void saveAdmin(Admin admin, boolean isEdit) {
+        if (isEdit) {
+            Admin existAdmin = findById(admin.getId());
+            admin.setPassword(existAdmin.getPassword());
+        } else {
+            admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        }
         admin.setEnabled(1);
         admin.setRole(Role.ROLE_ADMIN.toString());
         adminRepository.save(admin);
+    }
+
+    public void deleteAdmin(long id) {
+        Admin admin = findById(id);
+        adminRepository.delete(admin);
     }
 }
