@@ -1,6 +1,7 @@
 package pl.madld.cms.admin;
 
 import lombok.*;
+import pl.madld.cms.user.User;
 import pl.madld.cms.validation.*;
 
 import javax.persistence.*;
@@ -10,10 +11,10 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 @Data
 @ConfirmPassword(groups = {AddValidators.class, ChangePasswordValidators.class})
-@EditUniqueEmail(groups = EditValidators.class)
+@UniqueEmail(service = AdminService.class, groups = {AddValidators.class, EditValidators.class})
 @Entity
 @Table(name = Admin.TABLE_NAME)
-public class Admin {
+public class Admin implements User {
     public static final String TABLE_NAME = "admins";
 
     @Id
@@ -21,7 +22,6 @@ public class Admin {
     private Long id;
     @NotEmpty(message = "{invalid.email.not-empty}")
     @Email(message = "{invalid.email.email}")
-    @AddEmailUnique(groups = AddValidators.class)
     @Column(nullable = false, unique = true, length = 60)
     private String email;
     @AdminPassword(groups = {AddValidators.class, ChangePasswordValidators.class})

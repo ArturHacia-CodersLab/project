@@ -5,13 +5,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.madld.cms.admin.security.Role;
+import pl.madld.cms.user.UserService;
 
 import java.util.List;
 
 @AllArgsConstructor
 @Transactional
 @Service
-public class AdminService {
+public class AdminService implements UserService {
     private final AdminRepository adminRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -19,7 +20,7 @@ public class AdminService {
         return adminRepository.findAll();
     }
 
-    public Admin findById(long id) {
+    public Admin findById(Long id) {
         return adminRepository.getOne(id);
     }
     public Admin findByEmail(String email) {
@@ -44,7 +45,7 @@ public class AdminService {
         adminRepository.save(editAdmin);
     }
 
-    public void deleteAdmin(long id) {
+    public void deleteAdmin(Long id) {
         Admin admin = findById(id);
         adminRepository.delete(admin);
     }

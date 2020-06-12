@@ -49,6 +49,7 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String addAdmin(Model model) {
+        model.addAttribute("mode", "add");
         model.addAttribute("admin", new Admin());
         return "admin/admin";
     }
@@ -56,6 +57,8 @@ public class AdminController {
     public String createAdmin(@Validated({Default.class, AddValidators.class}) Admin admin, BindingResult result,
                               HttpSession session, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("mode", "add");
+            model.addAttribute("bindingResult", result);
             return "admin/admin";
         }
         adminService.createAdmin(admin);
@@ -77,8 +80,9 @@ public class AdminController {
     @PostMapping("/admin/{id}")
     public String saveAdmin(@Validated({Default.class, EditValidators.class}) Admin admin, BindingResult result,
                             HttpSession session, Model model) {
-        model.addAttribute("mode", "edit");
         if (result.hasErrors()) {
+            model.addAttribute("mode", "edit");
+            model.addAttribute("bindingResult", result);
             return "admin/admin";
         }
         Admin editAdmin = (Admin) session.getAttribute("editAdmin");
@@ -105,8 +109,9 @@ public class AdminController {
     @PostMapping("/pass/{id}")
     public String changePassword(@Validated({ChangePasswordValidators.class}) Admin admin, BindingResult result,
                                  HttpSession session, Model model) {
-        model.addAttribute("mode", "pass");
         if (result.hasErrors()) {
+            model.addAttribute("mode", "pass");
+            model.addAttribute("bindingResult", result);
             return "admin/admin";
         }
         Admin editAdmin = (Admin) session.getAttribute("editAdmin");
