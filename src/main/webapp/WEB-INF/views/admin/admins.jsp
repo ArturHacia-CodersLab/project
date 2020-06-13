@@ -29,7 +29,7 @@
                         <td>${admin.lastname}</td>
                         <td class="text-right">
                             <a href="<c:url value="/admin/admin/${admin.id}"/>" class="badge badge-pill badge-primary"><spring:message code="app.edit"/></a>
-                            <c:if test="${not admin.id.equals(currentAdmin.admin.id)}">
+                            <c:if test="${not admin.id.equals(currentUser.user.id)}">
                                 <a href="<c:url value="/admin/pass/${admin.id}"/>" class="badge badge-pill badge-warning"><spring:message code="app.password"/></a>
                             </c:if>
                             <c:if test="${admins.size() > 1}">
