@@ -1,8 +1,9 @@
 package pl.madld.gizmoapp.user;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.madld.gizmoapp.validation.*;
 
 import javax.persistence.*;
@@ -11,7 +12,8 @@ import javax.validation.constraints.NotEmpty;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @ConfirmPassword(groups = {AddValidators.class, ChangePasswordValidators.class})
 @UniqueEmail(groups = {AddValidators.class, EditValidators.class})
 @Entity

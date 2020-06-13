@@ -24,9 +24,20 @@ public class Admin extends User {
     public static final String USER_TYPE = "admin";
 
     @NotNull
-    @Size(min = 5, max = 20, message = "{invalid.firstname.size}")
+    @Size(min = 3, max = 20, message = "{invalid.firstname.size}")
     private String firstname;
     @NotNull
-    @Size(min = 5, max = 30, message = "{invalid.lastname.size}")
+    @Size(min = 3, max = 30, message = "{invalid.lastname.size}")
     private String lastname;
+
+    @Override
+    public String toString() {
+        return "Admin {" +
+                "id=" + getId() +
+                ", email='" + getEmail() + '\'' +
+                ", username='" + getUsername() + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                '}';
+    }
 }

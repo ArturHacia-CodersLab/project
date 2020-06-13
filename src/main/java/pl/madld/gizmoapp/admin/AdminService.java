@@ -37,6 +37,7 @@ public class AdminService {
         editAdmin.setEmail(admin.getEmail());
         editAdmin.setFirstname(admin.getFirstname());
         editAdmin.setLastname(admin.getLastname());
+        editAdmin.setUsername(admin.getFirstname() + " " + admin.getLastname());
         adminRepository.save(editAdmin);
     }
 
@@ -45,8 +46,7 @@ public class AdminService {
         adminRepository.save(editAdmin);
     }
 
-    public void deleteAdmin(Long id) {
-        Admin admin = findById(id);
+    public void deleteAdmin(Admin admin) {
         adminRepository.delete(admin);
     }
 }

@@ -1,5 +1,6 @@
 .idea
 target
+logs
 
 # SaSS
 *.css.map

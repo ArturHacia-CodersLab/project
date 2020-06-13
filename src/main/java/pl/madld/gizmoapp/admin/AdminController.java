@@ -1,6 +1,8 @@
 package pl.madld.gizmoapp.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +26,16 @@ import java.util.Set;
 @RequestMapping("/admin")
 @SessionAttributes({"sessionMessages", "editAdmin"})
 public class AdminController {
+    Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     private final UtilService utilService;
     private final AdminService adminService;
 
+    private CurrentUser currentUser;
+
     @ModelAttribute("currentUser")
     public CurrentUser getCurrentUser(@AuthenticationPrincipal CurrentUser currentUser) {
+        this.currentUser = currentUser;
         return currentUser;
     }
     @ModelAttribute("messages")
@@ -63,6 +70,7 @@ public class AdminController {
         }
         adminService.createAdmin(admin);
         utilService.addMessage(session, model, new Message("message.admin-add", MessageType.success));
+        logger.info(currentUser.getUsername() + " add admin: " + admin);
         return "redirect:/admin/admins";
     }
 
@@ -92,6 +100,7 @@ public class AdminController {
         }
         adminService.saveAdmin(admin, editAdmin);
         utilService.addMessage(session, model, new Message("message.admin-save", MessageType.success));
+        logger.info(currentUser.getUsername() + " edit admin: " + editAdmin);
         return "redirect:/admin/admins";
     }
 
@@ -121,13 +130,20 @@ public class AdminController {
         }
         adminService.changePassword(admin, editAdmin);
         utilService.addMessage(session, model, new Message("message.admin-save", MessageType.success));
+        logger.info(currentUser.getUsername() + " change password admin: " + editAdmin);
         return "redirect:/admin/admins";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteAdmin(@PathVariable long id, HttpSession session, Model model) {
-        adminService.deleteAdmin(id);
+        Admin admin = adminService.findById(id);
+        if (admin == null) {
+            utilService.addMessage(session, model, new Message("message.critical-save", MessageType.danger));
+            return "redirect:/admin/admins";
+        }
+        adminService.deleteAdmin(admin);
         utilService.addMessage(session, model, new Message("message.admin-delete", MessageType.success));
+        logger.info(currentUser.getUsername() + " delete admin: " + admin);
         return "redirect:/admin/admins";
     }
 }
