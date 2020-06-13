@@ -1,6 +1,6 @@
 package pl.madld.gizmoapp.admin;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.groups.Default;
 import java.util.Set;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin")
 @SessionAttributes({"sessionMessages", "editAdmin"})

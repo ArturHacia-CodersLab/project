@@ -1,6 +1,6 @@
 package pl.madld.gizmoapp.admin;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +8,7 @@ import pl.madld.gizmoapp.security.Role;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 @Service
 public class AdminService {

@@ -3,9 +3,7 @@ package pl.madld.gizmoapp.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.madld.gizmoapp.validation.AddValidators;
-import pl.madld.gizmoapp.validation.AdminPassword;
-import pl.madld.gizmoapp.validation.ChangePasswordValidators;
+import pl.madld.gizmoapp.validation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,8 +12,8 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-//@ConfirmPassword(groups = {AddValidators.class, ChangePasswordValidators.class})
-//@UniqueEmail(service = AdminService.class, groups = {AddValidators.class, EditValidators.class})
+@ConfirmPassword(groups = {AddValidators.class, ChangePasswordValidators.class})
+@UniqueEmail(groups = {AddValidators.class, EditValidators.class})
 @Entity
 @Table(name = User.TABLE_NAME)
 @Inheritance(strategy=InheritanceType.JOINED)
