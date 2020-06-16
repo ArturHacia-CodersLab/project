@@ -10,14 +10,14 @@
     <jsp:include page="../../includes/messages.jsp"/>
     <div class="row mb-3">
         <div class="col">
-            <a href="<c:url value="/admin/admin"/>" class="btn btn-outline-success">Dodaj administratora</a>
+            <a href="<c:url value="/admin/admin"/>" class="btn btn-outline-success"><spring:message code="button.add-admin"/></a>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <table class="table">
                 <thead class="thead-dark">
-                    <th scope="col"><spring:message code="admin.email"/></th>
+                    <th scope="col"><spring:message code="user.email"/></th>
                     <th scope="col"><spring:message code="admin.firstname"/></th>
                     <th scope="col"><spring:message code="admin.lastname"/></th>
                     <th scope="col" class="w-20"></th>
@@ -30,10 +30,10 @@
                         <td class="text-right">
                             <a href="<c:url value="/admin/admin/${admin.id}"/>" class="badge badge-pill badge-primary"><spring:message code="app.edit"/></a>
                             <c:if test="${not admin.id.equals(currentUser.user.id)}">
-                                <a href="<c:url value="/admin/pass/${admin.id}"/>" class="badge badge-pill badge-warning"><spring:message code="app.password"/></a>
+                                <a href="<c:url value="/admin/admin/pass/${admin.id}"/>" class="badge badge-pill badge-warning"><spring:message code="app.password"/></a>
                             </c:if>
                             <c:if test="${admins.size() > 1}">
-                                <a href="<c:url value="/admin/delete/${admin.id}"/>" class="badge badge-pill badge-danger"><spring:message code="app.delete"/></a>
+                                <a href="<c:url value="/admin/admin/delete/${admin.id}"/>" class="badge badge-pill badge-danger"><spring:message code="app.delete"/></a>
                             </c:if>
                         </td>
                     </tr>

@@ -24,7 +24,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/admin")
-@SessionAttributes({"sessionMessages", "editAdmin"})
+@SessionAttributes({"sessionMessages", "baseAdmin"})
 public class AdminController {
     Logger logger = LoggerFactory.getLogger(AdminController.class);
 
@@ -82,7 +82,7 @@ public class AdminController {
         }
         model.addAttribute("mode", "edit");
         model.addAttribute("admin", admin);
-        model.addAttribute("editAdmin", admin);
+        model.addAttribute("baseAdmin", admin);
         return "admin/admin";
     }
     @PostMapping("/admin/{id}")
@@ -93,18 +93,18 @@ public class AdminController {
             model.addAttribute("bindingResult", result);
             return "admin/admin";
         }
-        Admin editAdmin = (Admin) session.getAttribute("editAdmin");
-        if (editAdmin == null || !editAdmin.getId().equals(admin.getId())) {
+        Admin baseAdmin = (Admin) session.getAttribute("baseAdmin");
+        if (baseAdmin == null || !baseAdmin.getId().equals(admin.getId())) {
             utilService.addMessage(session, model, new Message("message.critical-save", MessageType.danger));
             return "redirect:/admin/admins";
         }
-        adminService.saveAdmin(admin, editAdmin);
+        adminService.saveAdmin(admin, baseAdmin);
         utilService.addMessage(session, model, new Message("message.admin-save", MessageType.success));
-        logger.info(currentUser.getUsername() + " edit admin: " + editAdmin);
+        logger.info(currentUser.getUsername() + " edit admin: " + baseAdmin);
         return "redirect:/admin/admins";
     }
 
-    @GetMapping("/pass/{id}")
+    @GetMapping("/admin/pass/{id}")
     public String password(@PathVariable long id, Model model) {
         Admin admin = adminService.findById(id);
         if (admin == null) {
@@ -112,10 +112,10 @@ public class AdminController {
         }
         model.addAttribute("mode", "pass");
         model.addAttribute("admin", admin);
-        model.addAttribute("editAdmin", admin);
+        model.addAttribute("baseAdmin", admin);
         return "admin/admin";
     }
-    @PostMapping("/pass/{id}")
+    @PostMapping("/admin/pass/{id}")
     public String changePassword(@Validated({ChangePasswordValidators.class}) Admin admin, BindingResult result,
                                  HttpSession session, Model model) {
         if (result.hasErrors()) {
@@ -123,18 +123,18 @@ public class AdminController {
             model.addAttribute("bindingResult", result);
             return "admin/admin";
         }
-        Admin editAdmin = (Admin) session.getAttribute("editAdmin");
-        if (editAdmin == null || !editAdmin.getId().equals(admin.getId())) {
+        Admin baseAdmin = (Admin) session.getAttribute("baseAdmin");
+        if (baseAdmin == null || !baseAdmin.getId().equals(admin.getId())) {
             utilService.addMessage(session, model, new Message("message.critical-save", MessageType.danger));
             return "redirect:/admin/admins";
         }
-        adminService.changePassword(admin, editAdmin);
+        adminService.changePassword(admin, baseAdmin);
         utilService.addMessage(session, model, new Message("message.admin-save", MessageType.success));
-        logger.info(currentUser.getUsername() + " change password admin: " + editAdmin);
+        logger.info(currentUser.getUsername() + " change password admin: " + baseAdmin);
         return "redirect:/admin/admins";
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/admin/delete/{id}")
     public String deleteAdmin(@PathVariable long id, HttpSession session, Model model) {
         Admin admin = adminService.findById(id);
         if (admin == null) {

@@ -22,31 +22,28 @@ public class AdminService {
     protected Admin findById(Long id) {
         return adminRepository.getOne(id);
     }
-    public Admin findByEmail(String email) {
-        return adminRepository.findByEmail(email);
-    }
 
     public void createAdmin(Admin admin) {
         admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        admin.setEnabled(1);
+        admin.setEnabled((short) 1);
         admin.setRole(Role.ROLE_ADMIN.toString());
         admin.setUsername(admin.getFirstname() + " " + admin.getLastname());
         adminRepository.save(admin);
     }
-    protected void saveAdmin(Admin admin, Admin editAdmin) {
-        editAdmin.setEmail(admin.getEmail());
-        editAdmin.setFirstname(admin.getFirstname());
-        editAdmin.setLastname(admin.getLastname());
-        editAdmin.setUsername(admin.getFirstname() + " " + admin.getLastname());
-        adminRepository.save(editAdmin);
+    protected void saveAdmin(Admin admin, Admin baseAdmin) {
+        baseAdmin.setEmail(admin.getEmail());
+        baseAdmin.setFirstname(admin.getFirstname());
+        baseAdmin.setLastname(admin.getLastname());
+        baseAdmin.setUsername(admin.getFirstname() + " " + admin.getLastname());
+        adminRepository.save(baseAdmin);
     }
 
-    public void changePassword(Admin admin, Admin editAdmin) {
-        editAdmin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        adminRepository.save(editAdmin);
+    protected void changePassword(Admin admin, Admin baseAdmin) {
+        baseAdmin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        adminRepository.save(baseAdmin);
     }
 
-    public void deleteAdmin(Admin admin) {
+    protected void deleteAdmin(Admin admin) {
         adminRepository.delete(admin);
     }
 }
